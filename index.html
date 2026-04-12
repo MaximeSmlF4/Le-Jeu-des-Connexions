@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Connections Final</title>
+
+<style>
+body { font-family: Arial; padding: 20px; }
+
+.hidden { display:none; }
+
+input { width: 300px; margin: 5px 0; }
+
+button { margin: 5px; padding: 8px; cursor: pointer; }
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(4,120px);
+  gap:10px;
+}
+
+.word { height:60px; }
+
+.selected { background: lightblue; }
+.correct { background: lightgreen; }
+
+#msg { font-weight:bold; }
+
+/* 🎨 couleurs niveaux */
+.l1 { background:#ffe066; }
+.l2 { background:#69db7c; }
+.l3 { background:#74c0fc; }
+.l4 { background:#b197fc; }
+
+.group {
+  border:2px solid #333;
+  padding:10px;
+  margin:5px 0;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Connections</h1>
+
+<button onclick="showEditor()">Éditeur</button>
+<button onclick="showMenu()">Grilles</button>
+
+<hr>
+
+<!-- EDITOR -->
+<div id="editor">
+
+<h2>Créer grille</h2>
+
+<input id="name" placeholder="Nom"><br><br>
+
+<div id="cats"></div>
+
+<button onclick="addCat()">+ Catégorie</button>
+<button onclick="save()">Sauvegarder</button>
+
+</div>
+
+<!-- MENU -->
+<div id="menu" class="hidden">
+<h2>Grilles</h2>
+<div id="list"></div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="hidden">
+
+<h2 id="title"></h2>
+
+<div>❤️ Vies: <span id="lives">4</span></div>
+
+<h3>Groupes trouvés</h3>
+<div id="found"></div>
+
+<div id="grid" class="grid"></div>
+
+<p id="msg"></p>
+
+<button onclick="check()">Valider</button>
+
+</div>
+
+<script>
+
+let grids = JSON.parse(localStorage.getItem("grids") || "[]");
+
+let current = null;
+let cats = [];
+let selected = [];
+let lives = 4;
+
+/* NAV */
+function hideAll(){
+  document.getElementById("editor").classList.add("hidden");
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("game").classList.add("hidden");
+}
+
+function showEditor(){
+  hideAll();
+  document.getElementById("editor").classList.remove("hidden");
+}
+
+function showMenu(){
+  hideAll();
+  document.getElementById("menu").classList.remove("hidden");
+  render();
+}
+
+/* ADD CATEGORY */
+function addCat(){
+
+  const div = document.createElement("div");
+
+  const input1 = document.createElement("input");
+  input1.placeholder = "nom";
+
+  const input2 = document.createElement("input");
+  input2.placeholder = "niveau 1-4";
+
+  const input3 = document.createElement("input");
+  input3.placeholder = "mot1, mot2, mot3, mot4";
+
+  div.appendChild(input1);
+  div.appendChild(document.createElement("br"));
+  div.appendChild(input2);
+  div.appendChild(document.createElement("br"));
+  div.appendChild(input3);
+  div.appendChild(document.createElement("br"));
+  div.appendChild(document.createElement("br"));
+
+  document.getElementById("cats").appendChild(div);
+}
+
+/* SAVE */
+function save(){
+
+  let data = [];
+
+  document.querySelectorAll("#cats div").forEach(d=>{
+    let i = d.querySelectorAll("input");
+
+    data.push({
+      name:i[0].value,
+      level:i[1].value,
+      words:i[2].value.split(",").map(x=>x.trim())
+    });
+  });
+
+  const name = document.getElementById("name").value;
+
+  grids.push({name:name, categories:data});
+  localStorage.setItem("grids", JSON.stringify(grids));
+
+  alert("Grille sauvegardée !");
+}
+
+/* LIST */
+function render(){
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  grids.forEach((g,i)=>{
+
+    let d = document.createElement("div");
+
+    let play = document.createElement("button");
+    play.textContent = "▶ " + g.name;
+    play.onclick = ()=>start(i);
+
+    let del = document.createElement("button");
+    del.textContent = "🗑";
+    del.onclick = ()=>{
+      grids.splice(i,1);
+      localStorage.setItem("grids", JSON.stringify(grids));
+      render();
+    };
+
+    d.appendChild(play);
+    d.appendChild(del);
+
+    list.appendChild(d);
+  });
+}
+
+/* GAME */
+function start(i){
+
+  current = grids[i];
+  cats = current.categories;
+
+  let words = [];
+  cats.forEach(c=>words.push(...c.words));
+  words.sort(()=>Math.random()-0.5);
+
+  selected = [];
+  lives = 4;
+
+  hideAll();
+  document.getElementById("game").classList.remove("hidden");
+
+  document.getElementById("title").textContent = current.name;
+  document.getElementById("lives").textContent = 4;
+  document.getElementById("msg").textContent = "";
+  document.getElementById("found").innerHTML = "";
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  words.forEach(w=>{
+
+    let b = document.createElement("button");
+    b.className = "word";
+    b.textContent = w;
+
+    b.onclick = ()=>{
+
+      if(b.classList.contains("correct")) return;
+
+      if(selected.includes(w)){
+        selected = selected.filter(x=>x!==w);
+        b.classList.remove("selected");
+      } else if(selected.length<4){
+        selected.push(w);
+        b.classList.add("selected");
+      }
+    };
+
+    grid.appendChild(b);
+  });
+}
+
+/* RESET SELECTION */
+function clearSelection(){
+  selected = [];
+  document.querySelectorAll(".word").forEach(b=>{
+    b.classList.remove("selected");
+  });
+}
+
+/* ADD FOUND CATEGORY */
+function addFound(c){
+
+  const div = document.createElement("div");
+
+  let levelClass = "";
+  if(c.level == "1") levelClass = "l1";
+  if(c.level == "2") levelClass = "l2";
+  if(c.level == "3") levelClass = "l3";
+  if(c.level == "4") levelClass = "l4";
+
+  div.className = "group " + levelClass;
+
+  div.innerHTML = `
+    <b>${c.name}</b> (niveau ${c.level})<br>
+    ${c.words.join(", ")}
+  `;
+
+  document.getElementById("found").appendChild(div);
+}
+
+/* CHECK */
+function check(){
+
+  const msg = document.getElementById("msg");
+
+  const sel = selected.map(x=>x.toLowerCase().trim());
+
+  for(let c of cats){
+
+    let cw = c.words.map(x=>x.toLowerCase().trim());
+
+    let ok = sel.length===4 && sel.every(w=>cw.includes(w));
+
+    if(ok){
+
+      msg.textContent = "✅ " + c.name;
+
+      addFound(c); // ✅ affichage
+
+      document.querySelectorAll(".word").forEach(b=>{
+        if(sel.includes(b.textContent.toLowerCase().trim())){
+          b.classList.add("correct");
+          b.disabled = true;
+        }
+      });
+
+      clearSelection();
+      return;
+    }
+
+    let overlap = sel.filter(w=>cw.includes(w)).length;
+
+    if(overlap===3){
+      msg.textContent = "⚠️ One Away";
+      lives--;
+      document.getElementById("lives").textContent = lives;
+
+      clearSelection();
+
+      if(lives===0) end();
+      return;
+    }
+  }
+
+  lives--;
+  document.getElementById("lives").textContent = lives;
+
+  if(lives===0){
+    end();
+    return;
+  }
+
+  msg.textContent="❌ Faux";
+
+  clearSelection();
+}
+
+/* END */
+function end(){
+  document.getElementById("msg").textContent="💀 Fin";
+  document.querySelectorAll(".word").forEach(b=>b.disabled=true);
+}
+
+/* INIT */
+showEditor();
+
+</script>
+
+</body>
+</html>
