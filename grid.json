@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°3",
+  "categories": [
+    {
+      "name": "Les 4 Fantastiques",
+      "level": "1",
+      "words": [
+        "Torche",
+        "Invisible",
+        "Chose",
+        "Élastique"
+      ]
+    },
+    {
+      "name": "en Lien avec la Cire ... ",
+      "level": "2",
+      "words": [
+        "Abeille",
+        "Statue",
+        "Cacheter",
+        "Bougie"
+      ]
+    },
+    {
+      "name": "Mots Contenant Strictement le Nom d'un Animal",
+      "level": "3",
+      "words": [
+        "Chatterton",
+        "Monarchien",
+        "Ampoule",
+        "Ilion"
+      ]
+    },
+    {
+      "name": "Anagrammes de Nationalités",
+      "level": "4",
+      "words": [
+        "Truc",
+        "Litanie",
+        "Ischion",
+        "Macaroni"
+      ]
+    }
+  ]
+}
