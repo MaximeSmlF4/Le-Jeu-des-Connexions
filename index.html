@@ -6,11 +6,33 @@
 
 <style>
 body { font-family: Arial; padding:20px; }
-.grid { display:grid; grid-template-columns:repeat(4,120px); gap:10px; }
-button { padding:8px; margin:5px; }
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(4,120px);
+  gap:10px;
+}
+
+button { padding:8px; margin:5px; cursor:pointer; }
+
 .word { height:60px; }
+
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
+
+.found-cat {
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  color:white;
+  font-weight:bold;
+}
+
+.level1 { background:#f1c40f; color:black; }
+.level2 { background:#2ecc71; }
+.level3 { background:#3498db; }
+.level4 { background:#9b59b6; }
+
 </style>
 </head>
 
@@ -19,11 +41,16 @@ button { padding:8px; margin:5px; }
 <h1>🧠 Connections</h1>
 
 <h2 id="title"></h2>
+
 <div>❤️ Vies: <span id="lives">4</span></div>
 
 <div id="found"></div>
+
 <div id="grid" class="grid"></div>
+
 <p id="msg"></p>
+
+<button onclick="check()">✔ Valider</button>
 
 <script>
 
@@ -31,6 +58,7 @@ let gameCats = [];
 let selected = [];
 let lives = 4;
 
+/* LOAD */
 async function loadGame(){
   const res = await fetch("grid.json");
   const data = await res.json();
@@ -39,32 +67,37 @@ async function loadGame(){
   start(data.name);
 }
 
+/* START */
 function start(title){
 
   document.getElementById("title").textContent = title;
+  document.getElementById("found").innerHTML = "";
 
   let words = [];
-  gameCats.forEach(c=>words.push(...c.words));
-  words.sort(()=>Math.random()-0.5);
+  gameCats.forEach(c => words.push(...c.words));
+  words.sort(() => Math.random() - 0.5);
 
   const grid = document.getElementById("grid");
-  grid.innerHTML="";
+  grid.innerHTML = "";
 
-  selected=[];
-  lives=4;
+  selected = [];
+  lives = 4;
+  document.getElementById("lives").textContent = lives;
+  document.getElementById("msg").textContent = "";
 
-  words.forEach(w=>{
-    const b=document.createElement("button");
-    b.className="word";
-    b.textContent=w;
+  words.forEach(w => {
+    const b = document.createElement("button");
+    b.className = "word";
+    b.textContent = w;
 
-    b.onclick=()=>{
-      if(b.classList.contains("correct")) return;
+    b.onclick = () => {
 
-      if(selected.includes(w)){
-        selected=selected.filter(x=>x!==w);
+      if (b.classList.contains("correct")) return;
+
+      if (selected.includes(w)) {
+        selected = selected.filter(x => x !== w);
         b.classList.remove("selected");
-      } else if(selected.length<4){
+      } else if (selected.length < 4) {
         selected.push(w);
         b.classList.add("selected");
       }
@@ -74,61 +107,80 @@ function start(title){
   });
 }
 
+/* CLEAR */
 function clearSelection(){
-  selected=[];
-  document.querySelectorAll(".word").forEach(b=>b.classList.remove("selected"));
+  selected = [];
+  document.querySelectorAll(".word").forEach(b => b.classList.remove("selected"));
 }
 
+/* CHECK */
 function check(){
 
-  const sel = selected.map(x=>x.toLowerCase().trim());
+  const sel = selected.map(x => x.toLowerCase().trim());
 
-  for(let c of gameCats){
+  for (let c of gameCats) {
 
-    let cw = c.words.map(x=>x.toLowerCase().trim());
+    let cw = c.words.map(x => x.toLowerCase().trim());
 
-    let ok = sel.length===4 && sel.every(w=>cw.includes(w));
+    let ok = sel.length === 4 && sel.every(w => cw.includes(w));
 
-    if(ok){
+    if (ok) {
 
-      document.getElementById("msg").textContent="✅ "+c.name;
+      document.getElementById("msg").textContent = "✅ " + c.name;
 
-      document.querySelectorAll(".word").forEach(b=>{
-        if(sel.includes(b.textContent.toLowerCase().trim())){
+      /* 🎨 AFFICHAGE CATÉGORIE */
+      const div = document.createElement("div");
+      div.className = "found-cat level" + c.level;
+
+      div.innerHTML =
+        "🧩 " + c.name +
+        " (Niveau " + c.level + ")<br>" +
+        c.words.join(", ");
+
+      document.getElementById("found").appendChild(div);
+
+      document.querySelectorAll(".word").forEach(b => {
+        if (sel.includes(b.textContent.toLowerCase().trim())) {
           b.classList.add("correct");
-          b.disabled=true;
+          b.disabled = true;
         }
       });
 
       clearSelection();
+
       return;
     }
 
-    let overlap = sel.filter(w=>cw.includes(w)).length;
+    let overlap = sel.filter(w => cw.includes(w)).length;
 
-    if(overlap===3){
+    if (overlap === 3) {
       lives--;
-      document.getElementById("lives").textContent=lives;
-      document.getElementById("msg").textContent="⚠️ One Away";
+      document.getElementById("lives").textContent = lives;
+      document.getElementById("msg").textContent = "⚠️ One Away";
+
       clearSelection();
-      if(lives===0) end();
+
+      if (lives === 0) end();
       return;
     }
   }
 
   lives--;
-  document.getElementById("lives").textContent=lives;
-  document.getElementById("msg").textContent="❌ Faux";
+  document.getElementById("lives").textContent = lives;
+  document.getElementById("msg").textContent = "❌ Faux";
+
   clearSelection();
 
-  if(lives===0) end();
+  if (lives === 0) end();
 }
 
+/* END */
 function end(){
-  document.getElementById("msg").textContent="💀 Fin";
-  document.querySelectorAll(".word").forEach(b=>b.disabled=true);
+  document.getElementById("msg").textContent = "💀 Fin de la partie";
+  document.querySelectorAll(".word").forEach(b => b.disabled = true);
 }
 
+/* INIT */
 loadGame();
 
 </script>
