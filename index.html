@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Connections</title>
+
+<style>
+body { font-family: Arial; padding:20px; }
+.grid { display:grid; grid-template-columns:repeat(4,120px); gap:10px; }
+button { padding:8px; margin:5px; }
+.word { height:60px; }
+.selected { background: lightblue; }
+.correct { background: lightgreen; }
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Connections</h1>
+
+<h2 id="title"></h2>
+<div>❤️ Vies: <span id="lives">4</span></div>
+
+<div id="found"></div>
+<div id="grid" class="grid"></div>
+<p id="msg"></p>
+
+<script>
+
+let gameCats = [];
+let selected = [];
+let lives = 4;
+
+async function loadGame(){
+  const res = await fetch("grid.json");
+  const data = await res.json();
+
+  gameCats = data.categories;
+  start(data.name);
+}
+
+function start(title){
+
+  document.getElementById("title").textContent = title;
+
+  let words = [];
+  gameCats.forEach(c=>words.push(...c.words));
+  words.sort(()=>Math.random()-0.5);
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML="";
+
+  selected=[];
+  lives=4;
+
+  words.forEach(w=>{
+    const b=document.createElement("button");
+    b.className="word";
+    b.textContent=w;
+
+    b.onclick=()=>{
+      if(b.classList.contains("correct")) return;
+
+      if(selected.includes(w)){
+        selected=selected.filter(x=>x!==w);
+        b.classList.remove("selected");
+      } else if(selected.length<4){
+        selected.push(w);
+        b.classList.add("selected");
+      }
+    };
+
+    grid.appendChild(b);
+  });
+}
+
+function clearSelection(){
+  selected=[];
+  document.querySelectorAll(".word").forEach(b=>b.classList.remove("selected"));
+}
+
+function check(){
+
+  const sel = selected.map(x=>x.toLowerCase().trim());
+
+  for(let c of gameCats){
+
+    let cw = c.words.map(x=>x.toLowerCase().trim());
+
+    let ok = sel.length===4 && sel.every(w=>cw.includes(w));
+
+    if(ok){
+
+      document.getElementById("msg").textContent="✅ "+c.name;
+
+      document.querySelectorAll(".word").forEach(b=>{
+        if(sel.includes(b.textContent.toLowerCase().trim())){
+          b.classList.add("correct");
+          b.disabled=true;
+        }
+      });
+
+      clearSelection();
+      return;
+    }
+
+    let overlap = sel.filter(w=>cw.includes(w)).length;
+
+    if(overlap===3){
+      lives--;
+      document.getElementById("lives").textContent=lives;
+      document.getElementById("msg").textContent="⚠️ One Away";
+      clearSelection();
+      if(lives===0) end();
+      return;
+    }
+  }
+
+  lives--;
+  document.getElementById("lives").textContent=lives;
+  document.getElementById("msg").textContent="❌ Faux";
+  clearSelection();
+
+  if(lives===0) end();
+}
+
+function end(){
+  document.getElementById("msg").textContent="💀 Fin";
+  document.querySelectorAll(".word").forEach(b=>b.disabled=true);
+}
+
+loadGame();
+
+</script>
+
+</body>
+</html>
