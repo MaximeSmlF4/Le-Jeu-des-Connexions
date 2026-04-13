@@ -2,16 +2,13 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Connections Final</title>
+<title>Connections</title>
 
 <style>
-body { font-family: Arial; padding: 20px; }
+body { font-family: Arial; padding:20px; }
 
-.hidden { display:none; }
-
-input { width: 300px; margin: 5px 0; }
-
-button { margin: 5px; padding: 8px; cursor: pointer; }
+button { margin:5px; padding:8px; cursor:pointer; }
+input { width:300px; margin:5px 0; }
 
 .grid {
   display:grid;
@@ -24,20 +21,22 @@ button { margin: 5px; padding: 8px; cursor: pointer; }
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
 
-#msg { font-weight:bold; }
+.hidden { display:none; }
 
-/* 🎨 couleurs niveaux */
-.l1 { background:#ffe066; }
-.l2 { background:#69db7c; }
-.l3 { background:#74c0fc; }
-.l4 { background:#b197fc; }
-
-.group {
-  border:2px solid #333;
+/* ⭐ AJOUT CATÉGORIES TROUVÉES */
+.found-cat {
   padding:10px;
-  margin:5px 0;
-  border-radius:6px;
+  margin:10px 0;
+  border-radius:8px;
+  color:white;
+  font-weight:bold;
 }
+
+.level1 { background:#f1c40f; color:black; }
+.level2 { background:#2ecc71; }
+.level3 { background:#3498db; }
+.level4 { background:#9b59b6; }
+
 </style>
 </head>
 
@@ -46,28 +45,30 @@ button { margin: 5px; padding: 8px; cursor: pointer; }
 <h1>🧠 Connections</h1>
 
 <button onclick="showEditor()">Éditeur</button>
-<button onclick="showMenu()">Grilles</button>
+<button onclick="showList()">Mes grilles</button>
+<button onclick="showGame()">Grille du jour</button>
 
 <hr>
 
 <!-- EDITOR -->
 <div id="editor">
 
-<h2>Créer grille</h2>
+<h2>Créer une grille</h2>
 
 <input id="name" placeholder="Nom"><br><br>
 
 <div id="cats"></div>
 
 <button onclick="addCat()">+ Catégorie</button>
-<button onclick="save()">Sauvegarder</button>
+<button onclick="save()">💾 Sauvegarder</button>
+<button onclick="copyJSON()">📋 Copier JSON</button>
 
 </div>
 
-<!-- MENU -->
-<div id="menu" class="hidden">
-<h2>Grilles</h2>
-<div id="list"></div>
+<!-- LIST -->
+<div id="list" class="hidden">
+<h2>Mes grilles</h2>
+<div id="grids"></div>
 </div>
 
 <!-- GAME -->
@@ -77,7 +78,7 @@ button { margin: 5px; padding: 8px; cursor: pointer; }
 
 <div>❤️ Vies: <span id="lives">4</span></div>
 
-<h3>Groupes trouvés</h3>
+<!-- ⭐ AJOUT AFFICHAGE CATÉGORIES TROUVÉES -->
 <div id="found"></div>
 
 <div id="grid" class="grid"></div>
@@ -92,27 +93,32 @@ button { margin: 5px; padding: 8px; cursor: pointer; }
 
 let grids = JSON.parse(localStorage.getItem("grids") || "[]");
 
-let current = null;
-let cats = [];
+let gameCats = [];
 let selected = [];
 let lives = 4;
 
 /* NAV */
 function hideAll(){
-  document.getElementById("editor").classList.add("hidden");
-  document.getElementById("menu").classList.add("hidden");
-  document.getElementById("game").classList.add("hidden");
+  document.getElementById("editor").style.display="none";
+  document.getElementById("list").style.display="none";
+  document.getElementById("game").style.display="none";
 }
 
 function showEditor(){
   hideAll();
-  document.getElementById("editor").classList.remove("hidden");
+  document.getElementById("editor").style.display="block";
 }
 
-function showMenu(){
+function showList(){
   hideAll();
-  document.getElementById("menu").classList.remove("hidden");
+  document.getElementById("list").style.display="block";
   render();
+}
+
+function showGame(){
+  hideAll();
+  document.getElementById("game").style.display="block";
+  loadGame();
 }
 
 /* ADD CATEGORY */
@@ -120,20 +126,20 @@ function addCat(){
 
   const div = document.createElement("div");
 
-  const input1 = document.createElement("input");
-  input1.placeholder = "nom";
+  const i1 = document.createElement("input");
+  i1.placeholder="nom";
 
-  const input2 = document.createElement("input");
-  input2.placeholder = "niveau 1-4";
+  const i2 = document.createElement("input");
+  i2.placeholder="niveau 1-4";
 
-  const input3 = document.createElement("input");
-  input3.placeholder = "mot1, mot2, mot3, mot4";
+  const i3 = document.createElement("input");
+  i3.placeholder="mot1, mot2, mot3, mot4";
 
-  div.appendChild(input1);
+  div.appendChild(i1);
   div.appendChild(document.createElement("br"));
-  div.appendChild(input2);
+  div.appendChild(i2);
   div.appendChild(document.createElement("br"));
-  div.appendChild(input3);
+  div.appendChild(i3);
   div.appendChild(document.createElement("br"));
   div.appendChild(document.createElement("br"));
 
@@ -155,79 +161,141 @@ function save(){
     });
   });
 
-  const name = document.getElementById("name").value;
+  const gridName = document.getElementById("name").value || "Sans nom";
 
-  grids.push({name:name, categories:data});
+  grids.push({
+    name: gridName,
+    categories:data
+  });
+
   localStorage.setItem("grids", JSON.stringify(grids));
 
-  alert("Grille sauvegardée !");
+  alert("✅ Grille sauvegardée !");
+
+  render();
+}
+
+/* COPY JSON */
+function copyJSON(){
+
+  let data = [];
+
+  document.querySelectorAll("#cats div").forEach(d=>{
+    let i = d.querySelectorAll("input");
+
+    data.push({
+      name:i[0].value,
+      level:i[1].value,
+      words:i[2].value.split(",").map(x=>x.trim())
+    });
+  });
+
+  const json = JSON.stringify({
+    name: document.getElementById("name").value,
+    categories:data
+  }, null, 2);
+
+  navigator.clipboard.writeText(json);
+
+  alert("✅ JSON copié !");
 }
 
 /* LIST */
 function render(){
 
-  const list = document.getElementById("list");
-  list.innerHTML = "";
+  const container = document.getElementById("grids");
+  container.innerHTML="";
 
   grids.forEach((g,i)=>{
 
-    let d = document.createElement("div");
+    const d = document.createElement("div");
 
-    let play = document.createElement("button");
-    play.textContent = "▶ " + g.name;
-    play.onclick = ()=>start(i);
+    const title = document.createElement("b");
+    title.textContent = g.name;
 
-    let del = document.createElement("button");
-    del.textContent = "🗑";
-    del.onclick = ()=>{
+    const play = document.createElement("button");
+    play.textContent="▶";
+    play.onclick=()=>startLocal(i);
+
+    const copy = document.createElement("button");
+    copy.textContent="📋";
+    copy.onclick=()=>{
+      navigator.clipboard.writeText(JSON.stringify(g,null,2));
+      alert("JSON copié !");
+    };
+
+    const del = document.createElement("button");
+    del.textContent="🗑";
+    del.onclick=()=>{
       grids.splice(i,1);
       localStorage.setItem("grids", JSON.stringify(grids));
       render();
     };
 
+    d.appendChild(title);
+    d.appendChild(document.createElement("br"));
     d.appendChild(play);
+    d.appendChild(copy);
     d.appendChild(del);
 
-    list.appendChild(d);
+    container.appendChild(d);
   });
 }
 
-/* GAME */
-function start(i){
+/* LOAD JSON */
+async function loadGame(){
 
-  current = grids[i];
-  cats = current.categories;
+  const res = await fetch("grid.json");
+  const gameData = await res.json();
 
-  let words = [];
-  cats.forEach(c=>words.push(...c.words));
-  words.sort(()=>Math.random()-0.5);
+  gameCats = gameData.categories;
 
-  selected = [];
-  lives = 4;
+  start(gameData.name);
+}
+
+/* START LOCAL */
+function startLocal(i){
+
+  const g = grids[i];
+
+  gameCats = g.categories;
 
   hideAll();
-  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("game").style.display="block";
 
-  document.getElementById("title").textContent = current.name;
+  start(g.name);
+}
+
+/* START */
+function start(titleText){
+
+  let words = [];
+  gameCats.forEach(c=>words.push(...c.words));
+  words.sort(()=>Math.random()-0.5);
+
+  selected=[];
+  lives=4;
+
+  document.getElementById("title").textContent = titleText;
   document.getElementById("lives").textContent = 4;
   document.getElementById("msg").textContent = "";
+
+  /* ⭐ RESET CATEGORIES TROUVÉES */
   document.getElementById("found").innerHTML = "";
 
   const grid = document.getElementById("grid");
-  grid.innerHTML = "";
+  grid.innerHTML="";
 
   words.forEach(w=>{
+    let b=document.createElement("button");
+    b.className="word";
+    b.textContent=w;
 
-    let b = document.createElement("button");
-    b.className = "word";
-    b.textContent = w;
-
-    b.onclick = ()=>{
-
+    b.onclick=()=>{
       if(b.classList.contains("correct")) return;
 
       if(selected.includes(w)){
-        selected = selected.filter(x=>x!==w);
+        selected=selected.filter(x=>x!==w);
         b.classList.remove("selected");
       } else if(selected.length<4){
         selected.push(w);
@@ -239,43 +307,18 @@ function start(i){
   });
 }
 
-/* RESET SELECTION */
+/* RESET */
 function clearSelection(){
-  selected = [];
-  document.querySelectorAll(".word").forEach(b=>{
-    b.classList.remove("selected");
-  });
-}
-
-/* ADD FOUND CATEGORY */
-function addFound(c){
-
-  const div = document.createElement("div");
-
-  let levelClass = "";
-  if(c.level == "1") levelClass = "l1";
-  if(c.level == "2") levelClass = "l2";
-  if(c.level == "3") levelClass = "l3";
-  if(c.level == "4") levelClass = "l4";
-
-  div.className = "group " + levelClass;
-
-  div.innerHTML = `
-    <b>${c.name}</b> (niveau ${c.level})<br>
-    ${c.words.join(", ")}
-  `;
-
-  document.getElementById("found").appendChild(div);
+  selected=[];
+  document.querySelectorAll(".word").forEach(b=>b.classList.remove("selected"));
 }
 
 /* CHECK */
 function check(){
 
-  const msg = document.getElementById("msg");
-
   const sel = selected.map(x=>x.toLowerCase().trim());
 
-  for(let c of cats){
+  for(let c of gameCats){
 
     let cw = c.words.map(x=>x.toLowerCase().trim());
 
@@ -283,28 +326,41 @@ function check(){
 
     if(ok){
 
-      msg.textContent = "✅ " + c.name;
+      document.getElementById("msg").textContent="✅ "+c.name;
 
-      addFound(c); // ✅ affichage
+      /* ⭐ AJOUT VISUEL CATÉGORIE TROUVÉE */
+      const div = document.createElement("div");
+      div.className = "found-cat level"+c.level;
+
+      div.innerHTML =
+        "🧩 "+c.name+" (Niveau "+c.level+")<br>" +
+        c.words.join(", ");
+
+      document.getElementById("found").appendChild(div);
 
       document.querySelectorAll(".word").forEach(b=>{
         if(sel.includes(b.textContent.toLowerCase().trim())){
           b.classList.add("correct");
-          b.disabled = true;
+          b.disabled=true;
         }
       });
 
       clearSelection();
+
+      /* 🎉 victoire */
+      if(document.querySelectorAll(".correct").length === 16){
+        document.getElementById("msg").textContent="🎉 Félicitations !!! 👏";
+      }
+
       return;
     }
 
     let overlap = sel.filter(w=>cw.includes(w)).length;
 
     if(overlap===3){
-      msg.textContent = "⚠️ One Away";
+      document.getElementById("msg").textContent="⚠️ One Away";
       lives--;
-      document.getElementById("lives").textContent = lives;
-
+      document.getElementById("lives").textContent=lives;
       clearSelection();
 
       if(lives===0) end();
@@ -313,14 +369,10 @@ function check(){
   }
 
   lives--;
-  document.getElementById("lives").textContent = lives;
+  document.getElementById("lives").textContent=lives;
+  document.getElementById("msg").textContent="❌ Faux";
 
-  if(lives===0){
-    end();
-    return;
-  }
-
-  msg.textContent="❌ Faux";
+  if(lives===0) end();
 
   clearSelection();
 }
