@@ -135,11 +135,20 @@ function addCat(){
   const i3 = document.createElement("input");
   i3.placeholder="mot1, mot2, mot3, mot4";
 
+  // 🗑 bouton suppression
+  const del = document.createElement("button");
+  del.textContent = "🗑 Supprimer";
+  del.onclick = () => {
+    div.remove();
+  };
+
   div.appendChild(i1);
   div.appendChild(document.createElement("br"));
   div.appendChild(i2);
   div.appendChild(document.createElement("br"));
   div.appendChild(i3);
+  div.appendChild(document.createElement("br"));
+  div.appendChild(del);
   div.appendChild(document.createElement("br"));
   div.appendChild(document.createElement("br"));
 
