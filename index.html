@@ -179,9 +179,10 @@ function check() {
   // Sauvegarde des vies dans localStorage
   saveLives();
 
-  errors++;
-
+  // On ne comptabilise l'erreur que si la sélection est incorrecte
   const sel = selected.map(x => x.toLowerCase().trim());
+
+  let foundCategory = false;  // Cette variable vérifie si une catégorie a été trouvée
 
   for (let c of gameCats) {
     let cw = c.words.map(x => x.toLowerCase().trim());
@@ -190,6 +191,7 @@ function check() {
     let ok = sel.length === 4 && sel.every(w => cw.includes(w));
 
     if (ok) {
+      foundCategory = true;  // Catégorie trouvée, ne pas comptabiliser l'erreur
       document.getElementById("msg").textContent = "✅ " + c.name;
 
       // Affichage de la catégorie trouvée avec couleur
@@ -239,10 +241,13 @@ function check() {
     }
   }
 
-  // Si aucune catégorie trouvée
-  lives--;
-  document.getElementById("lives").textContent = lives;
-  document.getElementById("msg").textContent = "❌ Faux";
+  // Si aucune catégorie trouvée (cela constitue une erreur)
+  if (!foundCategory) {
+    errors++; // Ici, on compte une erreur seulement si aucune catégorie n'est trouvée
+    lives--; // On enlève une vie pour chaque erreur
+    document.getElementById("lives").textContent = lives;
+    document.getElementById("msg").textContent = "❌ Faux";
+  }
 
   clearSelection();
 
@@ -251,7 +256,6 @@ function check() {
   // Sauvegarde des vies après chaque modification
   saveLives();
 }
-
 
 /* END */
 function end(){
