@@ -83,13 +83,13 @@ async function loadGame(){
 
 /* START */
 function start(title){
-  // Charger les vies sauvegardées
-const savedLives = localStorage.getItem("connections_lives");
-if (savedLives !== null) {
-  lives = parseInt(savedLives);
-} else {
-  lives = 4;  // Par défaut si aucune donnée dans le localStorage
-}
+  // Charger les vies sauvegardées depuis localStorage
+  const savedLives = localStorage.getItem("connections_lives");
+  if (savedLives !== null) {
+    lives = parseInt(savedLives);  // On récupère les vies sauvegardées
+  } else {
+    lives = 4;  // Par défaut si aucune donnée dans le localStorage
+  }
 
 document.getElementById("lives").textContent = lives;
 
@@ -104,7 +104,6 @@ document.getElementById("lives").textContent = lives;
   grid.innerHTML = "";
 
   selected = [];
-  lives = 4;
   document.getElementById("lives").textContent = lives;
   document.getElementById("msg").textContent = "";
 
@@ -146,24 +145,28 @@ function clearSelection(){
   document.querySelectorAll(".word").forEach(b => b.classList.remove("selected"));
 }
 
+function saveLives(){
+  localStorage.setItem("connections_lives", lives);
+}
+
   async function saveScore(won){
 
   const player = document.getElementById("playerName").value || "Anonyme";
   const time = Math.floor((Date.now() - startTime) / 1000);
 
   await window.addDoc(
-  window.collection(window.db, "scores"),
-  {
-    player: player,
-    grid: document.getElementById("title").textContent,
-    errors: errors,
-    time: time,
-    won: won,
-    perfect: errors === 0,
-    date: new Date().toISOString()
-  }
-);
-
+    window.collection(window.db, "scores"),
+    {
+      player: player,
+      grid: document.getElementById("title").textContent,
+      errors: errors,
+      time: time,
+      won: won,
+      perfect: errors === 0,
+      date: new Date().toISOString()
+    }
+  );
+}
 /* CHECK */
 function check() {
   // Vérification si moins de 4 cases sont sélectionnées
@@ -173,7 +176,8 @@ function check() {
     return; // Si moins de 4 cases, on ne fait pas le reste
   }
 
-  localStorage.setItem("connections_lives", lives);
+  // Sauvegarde des vies dans localStorage
+  saveLives();
 
   errors++;
 
@@ -228,6 +232,9 @@ function check() {
       clearSelection();
 
       if (lives === 0) end();
+      
+      // Sauvegarde des vies après chaque modification
+      saveLives();
       return;
     }
   }
@@ -240,6 +247,9 @@ function check() {
   clearSelection();
 
   if (lives === 0) end();
+
+  // Sauvegarde des vies après chaque modification
+  saveLives();
 }
 
 
