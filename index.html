@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Connections</title>
 
+<input id="playerName" placeholder="Ton pseudo" />
+
 <style>
 body { font-family: Arial; padding:20px; }
 
@@ -33,6 +35,10 @@ button { padding:8px; margin:5px; cursor:pointer; }
 .level3 { background:#3498db; }
 .level4 { background:#9b59b6; }
 
+let attempts = 0;
+let startTime = Date.now();
+let timerInterval;
+
 </style>
 </head>
 
@@ -43,6 +49,8 @@ button { padding:8px; margin:5px; cursor:pointer; }
 <h2 id="title"></h2>
 
 <div>❤️ Vies: <span id="lives">4</span></div>
+
+<div>⏱ Temps : <span id="timer">0</span>s</div>
 
 <div id="found"></div>
 
@@ -105,6 +113,16 @@ function start(title){
 
     grid.appendChild(b);
   });
+
+  attempts = 0;
+startTime = Date.now();
+
+clearInterval(timerInterval);
+
+timerInterval = setInterval(() => {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  document.getElementById("timer").textContent = elapsed;
+}, 1000);
 }
 
 /* CLEAR */
@@ -113,8 +131,27 @@ function clearSelection(){
   document.querySelectorAll(".word").forEach(b => b.classList.remove("selected"));
 }
 
+  async function saveScore(won){
+
+  const player = document.getElementById("playerName").value || "Anonyme";
+  const time = Math.floor((Date.now() - startTime) / 1000);
+
+  await window.addDoc(
+    window.collection(window.db, "scores"),
+    {
+      player: player,
+      grid: document.getElementById("title").textContent,
+      attempts: attempts,
+      time: time,
+      won: won,
+      date: new Date().toISOString()
+    }
+  );
+}
+
 /* CHECK */
 function check(){
+  attempts++;
 
   const sel = selected.map(x => x.toLowerCase().trim());
 
@@ -146,6 +183,12 @@ function check(){
         }
       });
 
+      if(document.querySelectorAll(".correct").length === 16){
+        clearInterval(timerInterval);
+        saveScore(true);
+        document.getElementById("msg").textContent="🎉 Félicitations !!! 👏";      
+      }
+
       clearSelection();
 
       return;
@@ -174,14 +217,54 @@ function check(){
   if (lives === 0) end();
 }
 
+
+
 /* END */
 function end(){
   document.getElementById("msg").textContent = "💀 Fin de la partie";
   document.querySelectorAll(".word").forEach(b => b.disabled = true);
+  clearInterval(timerInterval);
+  saveScore(false);
+
+  let solutions = "<br><br>Solutions :<br>";
+
+  gameCats.forEach(c => {
+  solutions += "<b>" + c.name + "</b> : " + c.words.join(", ") + "<br>";
+});
+
+document.getElementById("msg").innerHTML += solutions;
 }
 
 /* INIT */
 loadGame();
+
+</script>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA-tIhMtZ_F0MEl_hYqy2_GUNl3dB-9mOg",
+  authDomain: "le-jeu-des-connexions.firebaseapp.com",
+  projectId: "le-jeu-des-connexions",
+  storageBucket: "le-jeu-des-connexions.firebasestorage.app",
+  messagingSenderId: "1069440204226",
+  appId: "1:1069440204226:web:7f82e149e1df3aee302a5b",
+  measurementId: "G-K9FJL1V8CX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
+window.collection = collection;
+window.addDoc = addDoc;
+window.getDocs = getDocs;
+window.query = query;
+window.orderBy = orderBy;
+window.limit = limit;
 
 </script>
 
