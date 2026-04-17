@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Connections</title>
 
-<input id="playerName" placeholder="Ton pseudo" />
+
 
 <style>
 body { font-family: Arial; padding:20px; }
@@ -35,9 +35,6 @@ button { padding:8px; margin:5px; cursor:pointer; }
 .level3 { background:#3498db; }
 .level4 { background:#9b59b6; }
 
-let attempts = 0;
-let startTime = Date.now();
-let timerInterval;
 
 </style>
 </head>
@@ -45,6 +42,8 @@ let timerInterval;
 <body>
 
 <h1>🧠 Connections</h1>
+
+<input id="playerName" placeholder="Ton pseudo" />
 
 <h2 id="title"></h2>
 
@@ -60,7 +59,14 @@ let timerInterval;
 
 <button onclick="check()">✔ Valider</button>
 
+<button onclick="loadScores()">🏆 Classement</button>
+<div id="scores"></div>
+
 <script>
+
+let attempts = 0;
+let startTime;
+let timerInterval;
 
 let gameCats = [];
 let selected = [];
@@ -183,7 +189,7 @@ function check(){
         }
       });
 
-      if(document.querySelectorAll(".correct").length === 16){
+      if (document.querySelectorAll(".correct").length === gameCats.length * 4) {
         clearInterval(timerInterval);
         saveScore(true);
         document.getElementById("msg").textContent="🎉 Félicitations !!! 👏";      
@@ -233,6 +239,32 @@ function end(){
 });
 
 document.getElementById("msg").innerHTML += solutions;
+}
+
+async function loadScores(){
+
+  const q = window.query(
+    window.collection(window.db, "scores"),
+    window.orderBy("time", "asc"),
+    window.limit(10)
+  );
+
+  const snap = await window.getDocs(q);
+
+  let html = "<h3>🏆 Top scores</h3>";
+
+  snap.forEach(doc => {
+    const d = doc.data();
+    html += `
+      <div>
+        <b>${d.player}</b> |
+        ${d.time}s |
+        ${d.attempts} essais
+      </div>
+    `;
+  });
+
+  document.getElementById("scores").innerHTML = html;
 }
 
 /* INIT */
