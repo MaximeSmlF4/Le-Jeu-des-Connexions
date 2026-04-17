@@ -179,11 +179,12 @@ function check() {
   // Sauvegarde des vies dans localStorage
   saveLives();
 
-  // On ne comptabilise l'erreur que si la sélection est incorrecte
+  // On réinitialise foundCategory à false pour chaque tentative
+  let foundCategory = false;
+
   const sel = selected.map(x => x.toLowerCase().trim());
 
-  let foundCategory = false;  // Cette variable vérifie si une catégorie a été trouvée
-
+  // Vérification de la sélection avec toutes les catégories
   for (let c of gameCats) {
     let cw = c.words.map(x => x.toLowerCase().trim());
 
@@ -191,7 +192,7 @@ function check() {
     let ok = sel.length === 4 && sel.every(w => cw.includes(w));
 
     if (ok) {
-      foundCategory = true;  // Catégorie trouvée, ne pas comptabiliser l'erreur
+      foundCategory = true;  // Catégorie trouvée, ne pas compter comme erreur
       document.getElementById("msg").textContent = "✅ " + c.name;
 
       // Affichage de la catégorie trouvée avec couleur
@@ -213,6 +214,7 @@ function check() {
         }
       });
 
+      // Vérification si toutes les catégories sont trouvées
       if (document.querySelectorAll(".correct").length === gameCats.length * 4) {
         clearInterval(timerInterval);
         saveScore(true);
@@ -243,20 +245,20 @@ function check() {
 
   // Si aucune catégorie trouvée (cela constitue une erreur)
   if (!foundCategory) {
-    errors++; // Ici, on compte une erreur seulement si aucune catégorie n'est trouvée
-    lives--; // On enlève une vie pour chaque erreur
+    errors++; // N'augmenter les erreurs que si la sélection est incorrecte
+    lives--; // Retrait d'une vie pour une erreur
     document.getElementById("lives").textContent = lives;
     document.getElementById("msg").textContent = "❌ Faux";
   }
 
   clearSelection();
 
+  // Si le joueur n'a plus de vies, fin de la partie
   if (lives === 0) end();
 
   // Sauvegarde des vies après chaque modification
   saveLives();
 }
-
 /* END */
 function end(){
   document.getElementById("msg").textContent = "💀 Fin de la partie";
