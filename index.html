@@ -64,7 +64,7 @@ button { padding:8px; margin:5px; cursor:pointer; }
 
 <script>
 
-let attempts = 0;
+let errors = 0;
 let startTime;
 let timerInterval;
 
@@ -120,7 +120,7 @@ function start(title){
     grid.appendChild(b);
   });
 
-  attempts = 0;
+  errors = 0;
 startTime = Date.now();
 
 clearInterval(timerInterval);
@@ -143,21 +143,21 @@ function clearSelection(){
   const time = Math.floor((Date.now() - startTime) / 1000);
 
   await window.addDoc(
-    window.collection(window.db, "scores"),
-    {
-      player: player,
-      grid: document.getElementById("title").textContent,
-      attempts: attempts,
-      time: time,
-      won: won,
-      date: new Date().toISOString()
-    }
-  );
-}
+  window.collection(window.db, "scores"),
+  {
+    player: player,
+    grid: document.getElementById("title").textContent,
+    errors: errors,
+    time: time,
+    won: won,
+    perfect: errors === 0,
+    date: new Date().toISOString()
+  }
+);
 
 /* CHECK */
 function check(){
-  attempts++;
+  errors++;
 
   const sel = selected.map(x => x.toLowerCase().trim());
 
@@ -193,6 +193,9 @@ function check(){
         clearInterval(timerInterval);
         saveScore(true);
         document.getElementById("msg").textContent="🎉 Félicitations !!! 👏";      
+      }
+      if(errors === 0){
+        document.getElementById("msg").textContent = "PERFECT GAME 🏅";
       }
 
       clearSelection();
@@ -256,12 +259,13 @@ async function loadScores(){
   snap.forEach(doc => {
     const d = doc.data();
     html += `
-      <div>
-        <b>${d.player}</b> |
-        ${d.time}s |
-        ${d.attempts} essais
-      </div>
-    `;
+  <div>
+    <b>${d.player}</b> |
+    ${d.time}s |
+    ${d.errors} erreurs
+    ${d.perfect ? "🏅 PERFECT" : ""}
+  </div>
+`;
   });
 
   document.getElementById("scores").innerHTML = html;
