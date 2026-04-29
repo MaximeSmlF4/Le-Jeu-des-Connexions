@@ -277,31 +277,34 @@ document.getElementById("msg").innerHTML += solutions;
 
 async function loadScores(){
 
+  const currentGrid = document.getElementById("title").textContent;
+
   const q = window.query(
     window.collection(window.db, "scores"),
+    window.where("grid", "==", currentGrid),
     window.orderBy("time", "asc"),
-    window.limit(10)
+    window.limit(20) // 👈 change ici si tu veux (10, 20, 50...)
   );
 
   const snap = await window.getDocs(q);
 
-  let html = "<h3>🏆 Top scores</h3>";
+  let html = "<h3>🏆 Classement</h3>";
 
   snap.forEach(doc => {
     const d = doc.data();
+
     html += `
-  <div>
-    <b>${d.player}</b> |
-    ${d.time}s |
-    ${d.errors} erreurs
-    ${d.perfect ? "🏅 PERFECT" : ""}
-  </div>
-`;
+      <div>
+        <b>${d.player}</b> |
+        ${d.time}s |
+        ${d.errors} erreurs
+        ${d.perfect ? "🏅 PERFECT" : ""}
+      </div>
+    `;
   });
 
   document.getElementById("scores").innerHTML = html;
 }
-
 /* INIT */
 loadGame();
 
@@ -310,7 +313,8 @@ loadGame();
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, where } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA-tIhMtZ_F0MEl_hYqy2_GUNl3dB-9mOg",
