@@ -85,11 +85,10 @@ async function loadGame(){
 
 /* START */
 function start(title){
-  // Charger les vies sauvegardées depuis localStorage
-  lives = 4;
-localStorage.setItem("connections_lives", lives);
 
-document.getElementById("lives").textContent = lives;
+  // ✅ reset propre des vies
+  lives = 4;
+  document.getElementById("lives").textContent = lives;
 
   document.getElementById("title").textContent = title;
   document.getElementById("found").innerHTML = "";
@@ -102,7 +101,6 @@ document.getElementById("lives").textContent = lives;
   grid.innerHTML = "";
 
   selected = [];
-  document.getElementById("lives").textContent = lives;
   document.getElementById("msg").textContent = "";
 
   words.forEach(w => {
@@ -127,14 +125,14 @@ document.getElementById("lives").textContent = lives;
   });
 
   errors = 0;
-startTime = Date.now();
+  startTime = Date.now();
 
-clearInterval(timerInterval);
+  clearInterval(timerInterval);
 
-timerInterval = setInterval(() => {
-  const elapsed = Math.floor((Date.now() - startTime) / 1000);
-  document.getElementById("timer").textContent = elapsed;
-}, 1000);
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    document.getElementById("timer").textContent = elapsed;
+  }, 1000);
 }
 
 /* CLEAR */
