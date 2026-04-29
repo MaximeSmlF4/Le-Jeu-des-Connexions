@@ -1,44 +1,44 @@
 {
-  "name": "Grille n°5 (ft. Axel)",
+  "name": "Grille n°6 ",
   "categories": [
     {
-      "name": "Ronds & Boucles",
+      "name": "... Noir(e)",
       "level": "1",
       "words": [
-        "Cycle",
-        "Cercle",
-        "Anneau",
-        "Tore"
+        "Bête",
+        "Regard",
+        "Café",
+        "Mouton"
       ]
     },
     {
-      "name": "Fade",
+      "name": "Chiens Célèbres en Phonétique ",
       "level": "2",
       "words": [
-        "Plat",
-        "Vide",
-        "Uniforme",
-        "Monotone"
+        "Lassi",
+        "Audi",
+        "Bile",
+        "Plutôt"
       ]
     },
     {
-      "name": "Champ Lexical de la Musique",
+      "name": "Mots qui prennent un 'x' au pluriel",
       "level": "3",
       "words": [
-        "Harmonique",
-        "Variété",
-        "Chambre",
-        "Partition"
+        "Ail",
+        "Viscéral",
+        "Boyau",
+        "Pou"
       ]
     },
     {
-      "name": "Bonne ...",
+      "name": "Chansons d'Olivia Rodrigo (avec des Majuscules)",
       "level": "4",
       "words": [
-        "Action",
-        "Résolution",
-        "Composition",
-        "Opération"
+        "Déjà-Vu",
+        "Lacy",
+        "Vampire",
+        "Brutal"
       ]
     }
   ]
