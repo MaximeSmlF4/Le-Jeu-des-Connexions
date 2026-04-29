@@ -275,15 +275,16 @@ function end(){
 document.getElementById("msg").innerHTML += solutions;
 }
 
+
+
 async function loadScores(){
 
   const currentGrid = document.getElementById("title").textContent;
 
   const q = window.query(
     window.collection(window.db, "scores"),
-    window.where("grid", "==", currentGrid),
     window.orderBy("time", "asc"),
-    window.limit(20) // 👈 change ici si tu veux (10, 20, 50...)
+    window.limit(50)
   );
 
   const snap = await window.getDocs(q);
@@ -292,6 +293,8 @@ async function loadScores(){
 
   snap.forEach(doc => {
     const d = doc.data();
+
+    if (d.grid !== currentGrid) return; // filtre JS
 
     html += `
       <div>
@@ -305,6 +308,8 @@ async function loadScores(){
 
   document.getElementById("scores").innerHTML = html;
 }
+
+  
 /* INIT */
 loadGame();
 
