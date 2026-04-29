@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Connections</title>
+  
 
 
 
@@ -60,6 +61,7 @@ button { padding:8px; margin:5px; cursor:pointer; }
 <button onclick="check()">✔ Valider</button>
 
 <button onclick="loadScores()">🏆 Classement</button>
+<button onclick="showSolutions()">💡 Solution</button>
 <div id="scores"></div>
 
 <script>
@@ -84,12 +86,8 @@ async function loadGame(){
 /* START */
 function start(title){
   // Charger les vies sauvegardées depuis localStorage
-  const savedLives = localStorage.getItem("connections_lives");
-  if (savedLives !== null) {
-    lives = parseInt(savedLives);  // On récupère les vies sauvegardées
-  } else {
-    lives = 4;  // Par défaut si aucune donnée dans le localStorage
-  }
+  lives = 4;
+localStorage.setItem("connections_lives", lives);
 
 document.getElementById("lives").textContent = lives;
 
@@ -229,7 +227,7 @@ function check() {
     let overlap = sel.filter(w => cw.includes(w)).length;
 
     if (overlap === 3) {
-      lives--;
+      if (lives > 0) lives--;
       document.getElementById("lives").textContent = lives;
       document.getElementById("msg").textContent = "⚠️ One Away";
 
@@ -246,7 +244,7 @@ function check() {
   // Si aucune catégorie trouvée (cela constitue une erreur)
   if (!foundCategory) {
     errors++; // N'augmenter les erreurs que si la sélection est incorrecte
-    lives--; // Retrait d'une vie pour une erreur
+    if (lives > 0) lives--; // Retrait d'une vie pour une erreur
     document.getElementById("lives").textContent = lives;
     document.getElementById("msg").textContent = "❌ Faux";
   }
@@ -259,22 +257,32 @@ function check() {
   // Sauvegarde des vies après chaque modification
   saveLives();
 }
-/* END */
-function end(){
-  document.getElementById("msg").textContent = "💀 Fin de la partie";
-  document.querySelectorAll(".word").forEach(b => b.disabled = true);
-  clearInterval(timerInterval);
-  saveScore(false);
+
+
+/* SHOW SOLUTIONS */
+function showSolutions(){
 
   let solutions = "<br><br>Solutions :<br>";
 
   gameCats.forEach(c => {
-  solutions += "<b>" + c.name + "</b> : " + c.words.join(", ") + "<br>";
-});
+    solutions += "<b>" + c.name + "</b> : " + c.words.join(", ") + "<br>";
+  });
 
-document.getElementById("msg").innerHTML += solutions;
+  document.getElementById("msg").innerHTML += solutions;
 }
 
+  
+/* END */
+function end(){
+  document.getElementById("msg").textContent = "💡 Tu peux continuer à chercher ou afficher la solution !";
+  clearInterval(timerInterval);
+
+  // On ne bloque PLUS le jeu
+  lives = 0;
+  document.getElementById("lives").textContent = 0;
+
+  saveScore(false);
+}
 
 
 async function loadScores(){
