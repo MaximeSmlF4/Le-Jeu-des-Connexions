@@ -1,44 +1,54 @@
 {
-  "name": "Grille n°6 ",
+  "name": "Grid n°7 (in English)",
   "categories": [
     {
-      "name": "... Noir(e)",
+      "name": "Celebrities born in Australia",
       "level": "1",
       "words": [
-        "Bête",
-        "Regard",
-        "Café",
-        "Mouton"
+        "Kidman",
+        "Jackman",
+        "Hemsworth",
+        "Minogue"
       ]
     },
     {
-      "name": "Chiens Célèbres en Phonétique ",
+      "name": "Celebrities with Repeated Initials",
       "level": "2",
       "words": [
-        "Lassi",
-        "Audi",
-        "Bile",
-        "Plutôt"
+        "Reynolds",
+        "Redford",
+        "Jackson",
+        "Boone"
       ]
     },
     {
-      "name": "Mots qui prennent un 'x' au pluriel",
+      "name": "Lil ...",
       "level": "3",
       "words": [
-        "Ail",
-        "Viscéral",
-        "Boyau",
-        "Pou"
+        "Wayne",
+        "Kim",
+        "Jon",
+        "Baby"
       ]
     },
     {
-      "name": "Chansons d'Olivia Rodrigo (avec des Majuscules)",
+      "name": "'Dean'",
       "level": "4",
       "words": [
-        "Déjà-Vu",
-        "Lacy",
-        "Vampire",
-        "Brutal"
+        "Olivia",
+        "James",
+        "Lewis",
+        "Martin"
+      ]
+    },
+    {
+      "name": "Artists Names that contain a Punctuation Mark",
+      "level": "5",
+      "words": [
+        "Hyphen Hyphen",
+        "Slash",
+        "Dasha",
+        "Colonel Reyel"
       ]
     }
   ]
