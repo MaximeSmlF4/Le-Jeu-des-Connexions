@@ -5,44 +5,6 @@
 <title>Connections</title>
 
 
-<div id="home">
-  <h1 class="title">🧠 Le Jeu des Connexions</h1>
-
-  <input id="playerName" placeholder="Entre ton pseudo..." />
-
-  <button onclick="enterGame()">Jouer</button>
-</div>
-
-<div id="menu" style="display:none;"></div>
-
-<div id="game" style="display:none;">
-
-<div id="game-container">
-
-  <h1 class="title">🧠 Connections</h1>
-
-  <div class="top-bar">
-    ❤️ <span id="lives">4</span> |
-    ⏱ <span id="timer">0</span>s
-  </div>
-
-  <h2 id="title"></h2>
-
-  <div id="grid" class="grid"></div>
-
-  <div class="buttons">
-    <button onclick="check()">✔ Valider</button>
-    <button onclick="backToMenu()">⬅ Menu</button>
-    <button onclick="loadScores()">🏆 Classement</button>
-  </div>
-
-  <div id="found"></div>
-  <p id="msg"></p>
-  <div id="scores"></div>
-
-</div>
-  
-
 
 
 <style>
@@ -227,6 +189,42 @@ button:active {
 </head>
 
 <body>
+
+<!-- CONTENU VISIBLE DANS LE BODY -->
+<div id="home">
+  <h1 class="title">🧠 Le Jeu des Connexions</h1>
+
+  <input id="playerName" placeholder="Entre ton pseudo..." />
+
+  <button onclick="enterGame()">Jouer</button>
+</div>
+
+<div id="menu" style="display:none;"></div>
+
+<div id="game" style="display:none;">
+  <div id="game-container">
+    <h1 class="title">🧠 Connections</h1>
+
+    <div class="top-bar">
+      ❤️ <span id="lives">4</span> |
+      ⏱ <span id="timer">0</span>s
+    </div>
+
+    <h2 id="title"></h2>
+
+    <div id="grid" class="grid"></div>
+
+    <div class="buttons">
+      <button onclick="check()">✔ Valider</button>
+      <button onclick="backToMenu()">⬅ Menu</button>
+      <button onclick="loadScores()">🏆 Classement</button>
+    </div>
+
+    <div id="found"></div>
+    <p id="msg"></p>
+    <div id="scores"></div>
+  </div>
+</div>
 
 <script>
 
