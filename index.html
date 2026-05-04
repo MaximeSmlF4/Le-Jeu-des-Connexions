@@ -55,12 +55,7 @@
   
 body { font-family: Arial; padding:20px; }
 
-.grid {
-  display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:10px;
-  max-width:500px;
-}
+
 
 button {
   width:200px;
@@ -75,16 +70,31 @@ button:hover {
   transform:scale(1.05);
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 110px); /* taille FIXE */
+  grid-auto-rows: 70px;                   /* hauteur FIXE */
+  gap: 10px;
+  justify-content: center;                /* centre la grille */
+  margin: 20px auto;
+}
+
 .word {
-  height:70px;
-  font-size: clamp(10px, 2.5vw, 16px);
-  padding:5px;
-  overflow:hidden;
-  text-align:center;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  word-break:break-word;
+  width: 110px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px;
+  text-align: center;
+
+  font-size: clamp(9px, 1.8vw, 14px); /* texte adaptatif */
+  line-height: 1.1;
+
+  overflow: hidden;
+  word-break: break-word;
 }
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
