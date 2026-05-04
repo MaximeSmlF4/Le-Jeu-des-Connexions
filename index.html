@@ -193,32 +193,25 @@ button:active {
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
 
-/* Bloc solutions fixe pour ordinateur */
+/* Taille fixe pour les blocs solutions (desktop) */
 .found-cat {
-  width: 400px;         /* largeur fixe */
-  max-width: 400px;     /* pas plus grand */
-  height: 100px;        /* hauteur fixe */
-  max-height: 100px;    /* pas plus haut */
-  overflow-y: auto;     /* scroll vertical si texte trop long */
-  overflow-x: hidden;   /* pas de scroll horizontal */
+  width: 400px;        /* largeur fixe sur ordinateur */
+  height: 100px;       /* hauteur fixe sur ordinateur */
+  overflow-y: auto;    /* scroll si beaucoup de mots */
   padding: 10px;
   margin: 10px 0;
   border-radius: 8px;
   color: white;
   font-weight: bold;
   box-sizing: border-box;
-  font-size: 1rem;      /* police fixe pour PC */
 }
 
-/* Bloc solutions fixe pour mobile */
+/* Taille fixe pour les blocs solutions (mobile) */
 @media (max-width: 500px) {
   .found-cat {
-    width: 90vw;         /* 90% de la largeur de l'écran */
-    max-width: 300px;    /* limite maximale pour les très grands téléphones */
-    height: 80px;        /* hauteur fixe */
-    max-height: 80px;    /* limite de hauteur */
-    font-size: 0.8rem;   /* texte plus petit */
-    overflow-y: auto;    /* scroll si texte trop long */
+    width: 90%;         /* presque toute la largeur de l'écran */
+    height: 80px;       /* hauteur fixe adaptée au mobile */
+    font-size: 0.8rem;  /* texte légèrement plus petit */
   }
 }
 
