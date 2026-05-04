@@ -16,6 +16,31 @@
 <div id="menu" style="display:none;"></div>
 
 <div id="game" style="display:none;">
+
+<div id="game-container">
+
+  <h1 class="title">🧠 Connections</h1>
+
+  <div class="top-bar">
+    ❤️ <span id="lives">4</span> |
+    ⏱ <span id="timer">0</span>s
+  </div>
+
+  <h2 id="title"></h2>
+
+  <div id="grid" class="grid"></div>
+
+  <div class="buttons">
+    <button onclick="check()">✔ Valider</button>
+    <button onclick="backToMenu()">⬅ Menu</button>
+    <button onclick="loadScores()">🏆 Classement</button>
+  </div>
+
+  <div id="found"></div>
+  <p id="msg"></p>
+  <div id="scores"></div>
+
+</div>
   
 
 
@@ -32,8 +57,16 @@
 }
 
 .title {
-  font-size:40px;
-  margin-bottom:20px;
+  text-align:center;
+  color:white;
+  margin-bottom:10px;
+}
+
+.top-bar {
+  text-align:center;
+  color:white;
+  font-size:18px;
+  margin-bottom:10px;
 }
 
 #home input {
@@ -52,22 +85,46 @@
   background:white;
   cursor:pointer;
 }
-  
-body { font-family: Arial; padding:20px; }
+
+body {
+  font-family: Arial;
+  margin:0;
+  padding:0;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height:100vh;
+}
+
+#game-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 15px;
+  text-align: center;
+}
 
 
 
-button {
-  width:200px;
-  height:60px;
-  font-size:18px;
-  border-radius:12px;
-  background:#fff;
+
+.buttons {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:15px;
+}
+
+.buttons button {
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  cursor:pointer;
   transition:0.2s;
 }
 
-button:hover {
-  transform:scale(1.05);
+.buttons button:hover {
+  transform:scale(1.03);
 }
 
 .grid {
@@ -100,12 +157,31 @@ button:hover {
   border: 1px solid #ccc;
 }
 
-@media (max-width: 500px) {
-  .word {
-    font-size: clamp(11px, 4vw, 18px);
-  }
+button:active {
+  transform:scale(0.97);
 }
 
+#grid {
+  background: rgba(255,255,255,0.1);
+  padding:10px;
+  border-radius:15px;
+}
+
+@media (max-width: 500px) {
+
+  .title {
+    font-size:28px;
+  }
+
+  .top-bar {
+    font-size:16px;
+  }
+
+  button {
+    font-size:15px;
+  }
+
+}
   
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
@@ -129,27 +205,6 @@ button:hover {
 </head>
 
 <body>
-
-<h1>🧠 Connections</h1>
-
-<h2 id="title"></h2>
-
-<div>❤️ Vies: <span id="lives">4</span></div>
-
-<div>⏱ Temps : <span id="timer">0</span>s</div>
-
-<div id="found"></div>
-
-<div id="grid" class="grid"></div>
-
-<p id="msg"></p>
-
-<button onclick="check()">✔ Valider</button>
-
-<button onclick="loadScores()">🏆 Classement</button>
-<button onclick="showSolutions()">💡 Solution</button>
-<button onclick="backToMenu()">⬅ Retour au menu</button>
-<div id="scores"></div>
 
 <script>
 
