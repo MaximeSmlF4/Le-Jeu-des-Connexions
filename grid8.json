@@ -1,0 +1,45 @@
+{
+  "name": "Grid n°8 (ft. Pierre)",
+  "categories": [
+    {
+      "name": "Catégories de Poids en Boxe",
+      "level": "1",
+      "words": [
+        "Lourd",
+        "Léger",
+        "Coq",
+        "Mouche"
+      ]
+    },
+    {
+      "name": "Effet (de) ...",
+      "level": "2",
+      "words": [
+        "Papillon",
+        "Choc",
+        "Masse",
+        "Personnel"
+      ]
+    },
+    {
+      "name": "Mots Contenant Quatre 'L'",
+      "level": "3",
+      "words": [
+        "Libellule",
+        "Volleyball",
+        "Multiculturelle",
+        "Millefeuille"
+      ]
+    },
+    {
+      "name": "Prof...",
+      "level": "4",
+      "words": [
+        "Ane",
+        "Onde",
+        "Ils",
+        "Us"
+      ]
+    }
+  ]
+}
