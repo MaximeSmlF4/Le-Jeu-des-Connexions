@@ -193,16 +193,29 @@ button:active {
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
 
+/* Taille fixe pour les blocs solutions (desktop) */
 .found-cat {
-  max-width: 400px;      /* largeur max */
-  max-height: 100px;     /* hauteur fixe pour chaque bloc solution */
-  overflow-y: auto;      /* scroll si beaucoup de mots */
+  width: 400px;        /* largeur fixe sur ordinateur */
+  height: 100px;       /* hauteur fixe sur ordinateur */
+  overflow-y: auto;    /* scroll si beaucoup de mots */
   padding: 10px;
   margin: 10px 0;
   border-radius: 8px;
   color: white;
   font-weight: bold;
+  box-sizing: border-box;
 }
+
+/* Taille fixe pour les blocs solutions (mobile) */
+@media (max-width: 500px) {
+  .found-cat {
+    width: 90%;         /* presque toute la largeur de l'écran */
+    height: 80px;       /* hauteur fixe adaptée au mobile */
+    font-size: 0.8rem;  /* texte légèrement plus petit */
+  }
+}
+
+  
 .level1 { background:#f1c40f; color:black; }
 .level2 { background:#2ecc71; }
 .level3 { background:#3498db; }
