@@ -57,8 +57,9 @@ body { font-family: Arial; padding:20px; }
 
 .grid {
   display:grid;
-  grid-template-columns:repeat(4,120px);
+  grid-template-columns:repeat(4, minmax(0, 1fr));
   gap:10px;
+  max-width:500px;
 }
 
 button {
@@ -74,8 +75,17 @@ button:hover {
   transform:scale(1.05);
 }
 
-.word { height:60px; }
-
+.word {
+  height:70px;
+  font-size: clamp(10px, 2.5vw, 16px);
+  padding:5px;
+  overflow:hidden;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  word-break:break-word;
+}
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
 
@@ -101,8 +111,6 @@ button:hover {
 
 <h1>🧠 Connections</h1>
 
-<input id="playerName" placeholder="Ton pseudo" />
-
 <h2 id="title"></h2>
 
 <div>❤️ Vies: <span id="lives">4</span></div>
@@ -119,6 +127,7 @@ button:hover {
 
 <button onclick="loadScores()">🏆 Classement</button>
 <button onclick="showSolutions()">💡 Solution</button>
+<button onclick="backToMenu()">⬅ Retour au menu</button>
 <div id="scores"></div>
 
 <script>
@@ -142,16 +151,22 @@ async function loadGame(){
 
 function enterGame(){
   const name = document.getElementById("playerName").value;
+  localStorage.setItem("playerName", name);
 
   if(!name){
     alert("Entre un pseudo !");
     return;
   }
 
+  // ✅ on sauvegarde le pseudo globalement
+  window.playerName = localStorage.getItem("playerName");
+
+
   document.getElementById("home").style.display = "none";
   loadMenu();
 }
 
+  
 async function loadMenu(){
 
   const res = await fetch("grids.json");
@@ -186,6 +201,17 @@ async function loadGridFile(file){
   gameCats = data.categories;
 
   start(data.name); // ⚠️ ton système actuel reste intact
+}
+
+function backToMenu(){
+
+  document.getElementById("game").style.display = "none";
+  document.getElementById("menu").style.display = "block";
+
+  // reset visuel
+  document.getElementById("grid").innerHTML = "";
+  document.getElementById("found").innerHTML = "";
+  document.getElementById("msg").textContent = "";
 }
 
 /* START */
@@ -252,7 +278,7 @@ function saveLives(){
 
   async function saveScore(won){
 
-  const player = document.getElementById("playerName").value || "Anonyme";
+  const player = window.playerName || "Anonyme";
   const time = Math.floor((Date.now() - startTime) / 1000);
 
   await window.addDoc(
