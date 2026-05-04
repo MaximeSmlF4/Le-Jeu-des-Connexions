@@ -137,26 +137,17 @@ body {
 }
 
 .word {
-  width: 100%;
-  aspect-ratio: 1.6; /* garde une forme rectangle stable */
-
+  height: 60px;          /* taille fixe du rectangle */
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 6px;
+  font-size: 1rem;       /* taille initiale raisonnable */
   text-align: center;
-
-  font-size: clamp(10px, 3.5vw, 16px); /* 🔥 magie mobile */
-  line-height: 1.1;
-
-  overflow: hidden;
-  word-break: break-word;
-
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow-wrap: break-word; /* pour couper les mots longs */
 }
-
+  
 button:active {
   transform:scale(0.97);
 }
@@ -167,20 +158,24 @@ button:active {
   border-radius:15px;
 }
 
+/* Ajustement responsive */
 @media (max-width: 500px) {
-
-  .title {
-    font-size:28px;
+  .word {
+    font-size: 0.8rem;   /* texte réduit sur mobile */
+    height: 50px;        /* rectangle plus petit */
   }
+}
 
-  .top-bar {
-    font-size:16px;
+/* Titre H2 (nom de la grille) */
+#title {
+  font-size: 1.5rem;
+  margin-bottom:10px;
+}
+
+@media (max-width:500px) {
+  #title {
+    font-size:1.2rem;    /* réduit sur mobile */
   }
-
-  button {
-    font-size:15px;
-  }
-
 }
   
 .selected { background: lightblue; }
