@@ -137,15 +137,17 @@ body {
 }
 
 .word {
-  height: 60px;          /* taille fixe du rectangle */
+  width: 100px;          /* largeur fixe */
+  height: 60px;          /* hauteur fixe */
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 1rem;       /* taille initiale raisonnable */
+  align-items: center;
   text-align: center;
+  font-size: 0.9rem;     /* texte proportionnel */
   padding: 5px;
   box-sizing: border-box;
-  overflow-wrap: break-word; /* pour couper les mots longs */
+  word-wrap: break-word;
+  overflow: hidden;      /* pour ne pas dépasser */
 }
   
 button:active {
@@ -177,18 +179,30 @@ button:active {
     font-size:1.2rem;    /* réduit sur mobile */
   }
 }
+
+#timer, #lives {
+  font-size: 1rem;       /* taille fixe pour tous les écrans */
+}
+
+@media (max-width: 500px) {
+  #timer, #lives {
+    font-size: 0.9rem;   /* légèrement plus petit sur mobile */
+  }
+}
   
 .selected { background: lightblue; }
 .correct { background: lightgreen; }
 
 .found-cat {
-  padding:10px;
-  margin:10px 0;
-  border-radius:8px;
-  color:white;
-  font-weight:bold;
+  max-width: 400px;      /* largeur max */
+  max-height: 100px;     /* hauteur fixe pour chaque bloc solution */
+  overflow-y: auto;      /* scroll si beaucoup de mots */
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
 }
-
 .level1 { background:#f1c40f; color:black; }
 .level2 { background:#2ecc71; }
 .level3 { background:#3498db; }
