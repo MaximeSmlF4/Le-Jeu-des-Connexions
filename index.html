@@ -245,23 +245,24 @@ async function loadGame(){
   start(data.name);
 }
 
-function enterGame(){
+function enterGame() {
   const name = document.getElementById("playerName").value;
-  localStorage.setItem("playerName", name);
-
-  if(!name){
+  
+  if (!name) {
     alert("Entre un pseudo !");
     return;
   }
 
   // ✅ on sauvegarde le pseudo globalement
-  window.playerName = localStorage.getItem("playerName");
+  window.playerName = name;
+  localStorage.setItem("playerName", name);
 
-
+  // Cache la page d'accueil
   document.getElementById("home").style.display = "none";
+
+  // Charge le menu avec les grilles de jeu
   loadMenu();
 }
-
   
 async function loadMenu(){
 
