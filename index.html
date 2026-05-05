@@ -249,7 +249,8 @@ async function loadMenu() {
   const res = await fetch("grids.json");
   const data = await res.json();
 
-  console.log(data); // Vérifie que le fichier grids.json est bien chargé et contient les grilles
+  // Log pour vérifier que le fichier est bien chargé
+  console.log("Grilles chargées:", data);
 
   const menu = document.getElementById("menu");
   menu.style.display = "block";
@@ -268,10 +269,9 @@ async function loadMenu() {
 
   menu.innerHTML = html;
 }
-
 function enterGame() {
   const name = document.getElementById("playerName").value;
-  
+
   if (!name) {
     alert("Entre un pseudo !");
     return;
@@ -281,13 +281,15 @@ function enterGame() {
   window.playerName = name;
   localStorage.setItem("playerName", name);
 
+  // Log pour vérifier si le pseudo est bien enregistré
+  console.log("Nom du joueur:", name);
+
   // Cache la page d'accueil
   document.getElementById("home").style.display = "none";
 
   // Charge le menu avec les grilles de jeu
   loadMenu();
 }
-  
 
 
 async function loadGridFile(file){
