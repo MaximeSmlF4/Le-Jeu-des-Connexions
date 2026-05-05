@@ -269,7 +269,9 @@ async function loadMenu() {
 
   menu.innerHTML = html;
 }
-function enterGame() {
+
+  
+ function enterGame() {
   const name = document.getElementById("playerName").value;
 
   if (!name) {
@@ -282,7 +284,7 @@ function enterGame() {
   localStorage.setItem("playerName", name);
 
   // Log pour vérifier si le pseudo est bien enregistré
-  console.log("Nom du joueur:", name);
+  console.log("Nom du joueur enregistré dans localStorage:", localStorage.getItem("playerName"));
 
   // Cache la page d'accueil
   document.getElementById("home").style.display = "none";
@@ -290,7 +292,6 @@ function enterGame() {
   // Charge le menu avec les grilles de jeu
   loadMenu();
 }
-
 
 async function loadGridFile(file){
 
