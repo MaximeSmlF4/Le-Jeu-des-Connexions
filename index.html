@@ -218,6 +218,7 @@ button:active {
       <button onclick="check()">✔ Valider</button>
       <button onclick="backToMenu()">⬅ Menu</button>
       <button onclick="loadScores()">🏆 Classement</button>
+      <button onclick="showSolutions()">🧩 Afficher les solutions</button>
     </div>
 
     <div id="found"></div>
@@ -492,10 +493,9 @@ function check() {
 
 
 /* SHOW SOLUTIONS */
-function showSolutions(){
-
+function showSolutions() {
   let solutions = "<br><br>Solutions :<br>";
-
+  
   gameCats.forEach(c => {
     solutions += "<b>" + c.name + "</b> : " + c.words.join(", ") + "<br>";
   });
