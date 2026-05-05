@@ -245,6 +245,30 @@ async function loadGame(){
   start(data.name);
 }
 
+async function loadMenu() {
+  const res = await fetch("grids.json");
+  const data = await res.json();
+
+  console.log(data); // Vérifie que le fichier grids.json est bien chargé et contient les grilles
+
+  const menu = document.getElementById("menu");
+  menu.style.display = "block";
+
+  let html = "<h2 style='text-align:center'>Choisis ta grille</h2>";
+
+  data.grids.forEach(g => {
+    html += `
+      <div style="text-align:center; margin:10px;">
+        <button onclick="loadGridFile('${g.file}')">
+          🎮 ${g.name}
+        </button>
+      </div>
+    `;
+  });
+
+  menu.innerHTML = html;
+}
+
 function enterGame() {
   const name = document.getElementById("playerName").value;
   
@@ -264,28 +288,7 @@ function enterGame() {
   loadMenu();
 }
   
-async function loadMenu(){
 
-  const res = await fetch("grids.json");
-  const data = await res.json();
-
-  const menu = document.getElementById("menu");
-  menu.style.display = "block";
-
-  let html = "<h2 style='text-align:center'>Choisis ta grille</h2>";
-
-  data.grids.forEach(g => {
-    html += `
-      <div style="text-align:center; margin:10px;">
-        <button onclick="loadGridFile('${g.file}')">
-          🎮 ${g.name}
-        </button>
-      </div>
-    `;
-  });
-
-  menu.innerHTML = html;
-}
 
 async function loadGridFile(file){
 
