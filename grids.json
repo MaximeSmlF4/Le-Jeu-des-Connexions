@@ -7,6 +7,7 @@
     { "name": "Grille n°5", "file": "grid5.json" },
     { "name": "Grille n°6", "file": "grid6.json" },
     { "name": "Grille n°7", "file": "grid7.json" },
-    { "name": "Grille n°8", "file": "grid8.json" }
+    { "name": "Grille n°8", "file": "grid8.json" },
+    { "name": "Grille n°9 (NEW!!!)", "file": "grid9.json" }
   ]
 }
