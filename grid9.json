@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°9",
+  "categories": [
+    {
+      "name": "Symboles présents sur les Machines à Sous des Casinos",
+      "level": "1",
+      "words": [
+        "🍀",
+        "7️⃣",
+        "🍒",
+        "❤️"
+      ]
+    },
+    {
+      "name": "Mots contenant un 'z'",
+      "level": "2",
+      "words": [
+        "🦓",
+        "🧟",
+        "🥨",
+        "1️⃣2️⃣"
+      ]
+    },
+    {
+      "name": "Eléments figurant sur des Drapeaux de Pays",
+      "level": "3",
+      "words": [
+        "🍁",
+        "🦅",
+        "🌙",
+        "🔴"
+      ]
+    },
+    {
+      "name": "Signes du Zodiaque Chinois",
+      "level": "4",
+      "words": [
+        "🐷",
+        "🐵",
+        "🐶",
+        "🐑"
+      ]
+    }
+  ]
+}
