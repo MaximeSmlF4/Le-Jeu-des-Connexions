@@ -200,7 +200,7 @@ button:active {
     🎮 Jouer avec un pseudo
   </button>
 
-  <button onclick="playAnonymous()" style="margin-top:10px;">
+  <button type="button" onclick="playAnonymous()" style="margin-top:10px;">
     👤 Jouer sans pseudo
   </button>
 </div>
@@ -286,16 +286,17 @@ async function loadMenu() {
     return;
   }
 
-  function playAnonymous(){
+  async function playAnonymous(){
 
   window.playerName = "Anonyme";
   localStorage.setItem("playerName", "Anonyme");
 
   document.getElementById("home").style.display = "none";
 
-  loadMenu();
+  await loadMenu();
 }
 
+   
   // ✅ on sauvegarde le pseudo globalement
   window.playerName = name;
   localStorage.setItem("playerName", name);
