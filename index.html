@@ -196,13 +196,13 @@ button:active {
 
   <input id="playerName" placeholder="Entre ton pseudo..." />
 
-  <button onclick="enterGame()">
-    🎮 Jouer avec un pseudo
-  </button>
+  <div style="margin-top:10px;">
+    <button type="button" onclick="enterGame()">👤 Jouer avec un pseudo</button>
+  </div>
 
-<button type="button" onclick="playAnonymous()" style="margin-top:10px;">
-  👤 Jouer sans pseudo
-</button>
+  <div style="margin-top:10px;">
+    <button type="button" onclick="playAnonymous()">🎮 Jouer sans pseudo</button>
+  </div>
 </div>
 
 <div id="menu" style="display:none;"></div>
@@ -286,18 +286,6 @@ async function loadMenu() {
     return;
   }
 
- function playAnonymous() {
-  // On met un pseudo par défaut
-  window.playerName = "Anonyme";
-  localStorage.setItem("playerName", "Anonyme");
-
-  // On cache l'écran d'accueil
-  document.getElementById("home").style.display = "none";
-
-  // On charge le menu
-  loadMenu(); // PAS besoin de await ici, ça fonctionnera même si loadMenu est async
-}
-
    
   // ✅ on sauvegarde le pseudo globalement
   window.playerName = name;
@@ -312,6 +300,19 @@ async function loadMenu() {
   // Charge le menu avec les grilles de jeu
   loadMenu();
 }
+
+function playAnonymous() {
+  // On définit le pseudo par défaut
+  window.playerName = "Anonyme";
+  localStorage.setItem("playerName", "Anonyme");
+
+  // On cache l'écran d'accueil
+  document.getElementById("home").style.display = "none";
+
+  // On charge le menu des grilles
+  loadMenu();
+}
+
 
 async function loadGridFile(file){
 
