@@ -200,9 +200,9 @@ button:active {
     🎮 Jouer avec un pseudo
   </button>
 
-  <button type="button" onclick="playAnonymous()" style="margin-top:10px;">
-    👤 Jouer sans pseudo
-  </button>
+<button type="button" onclick="playAnonymous()" style="margin-top:10px;">
+  👤 Jouer sans pseudo
+</button>
 </div>
 
 <div id="menu" style="display:none;"></div>
@@ -286,14 +286,16 @@ async function loadMenu() {
     return;
   }
 
-  async function playAnonymous(){
-
+ function playAnonymous() {
+  // On met un pseudo par défaut
   window.playerName = "Anonyme";
   localStorage.setItem("playerName", "Anonyme");
 
+  // On cache l'écran d'accueil
   document.getElementById("home").style.display = "none";
 
-  await loadMenu();
+  // On charge le menu
+  loadMenu(); // PAS besoin de await ici, ça fonctionnera même si loadMenu est async
 }
 
    
