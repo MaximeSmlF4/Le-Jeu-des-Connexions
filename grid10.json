@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°10",
+  "categories": [
+    {
+      "name": "Exprimer",
+      "level": "1",
+      "words": [
+        "Verbaliser",
+        "Manifester",
+        "Extérioriser",
+        "Formuler"
+      ]
+    },
+    {
+      "name": "Types de Nage",
+      "level": "2",
+      "words": [
+        "Papillon",
+        "Chien",
+        "Indienne",
+        "Libre"
+      ]
+    },
+    {
+      "name": "Mots Mal Orthographiés... ",
+      "level": "3",
+      "words": [
+        "Opprobe",
+        "Cirhose",
+        "Aéropage",
+        "Disgresser"
+      ]
+    },
+    {
+      "name": "Mots Contenant le Nom d'un Département Français (modulo accents)",
+      "level": "4",
+      "words": [
+        "Aérodrome",
+        "Cherokee",
+        "Vilain",
+        "Enfreindre"
+      ]
+    }
+  ]
+}
