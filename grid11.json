@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°11",
+  "categories": [
+    {
+      "name": "Centre National de la Recherche Scientifique (CNRS)",
+      "level": "1",
+      "words": [
+        "Centre",
+        "National",
+        "Recherche",
+        "Scientifique"
+      ]
+    },
+    {
+      "name": "Abréviations Usuelles figurant dans le Dictionnaire",
+      "level": "2",
+      "words": [
+        "Fac",
+        "Labo",
+        "Photo",
+        "Vélo"
+      ]
+    },
+    {
+      "name": "Mots formant une Expression avec le mot 'Marche'",
+      "level": "3",
+      "words": [
+        "Nordique",
+        "État",
+        "Pied",
+        "Suivre"
+      ]
+    },
+    {
+      "name": "Mots contenant 'amu'",
+      "level": "4",
+      "words": [
+        "Intramusculaire",
+        "Hypothalamus",
+        "Camusien",
+        "Raggamuffin"
+      ]
+    }
+  ]
+}
