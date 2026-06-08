@@ -1,0 +1,45 @@
+{
+  "name": "Grid n°12 (in English)",
+  "categories": [
+    {
+      "name": "Famous Musicals",
+      "level": "1",
+      "words": [
+        "Hair",
+        "Cats",
+        "Fame",
+        "Wicked"
+      ]
+    },
+    {
+      "name": "Time...",
+      "level": "2",
+      "words": [
+        "Stamp",
+        "Line",
+        "Less",
+        "Saving"
+      ]
+    },
+    {
+      "name": "'Imagine Dragons' Songs",
+      "level": "3",
+      "words": [
+        "Sharks",
+        "Bones",
+        "Enemy",
+        "Radioactive"
+      ]
+    },
+    {
+      "name": "Words that are spelled like german words",
+      "level": "4",
+      "words": [
+        "Gut",
+        "Kind",
+        "Tag",
+        "Bald"
+      ]
+    }
+  ]
+}
