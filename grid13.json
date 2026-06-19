@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°13 (ft. Sergio)",
+  "categories": [
+    {
+      "name": "Lexique Viticole",
+      "level": "1",
+      "words": [
+        "Pied",
+        "Robe",
+        "Brut",
+        "Sec"
+      ]
+    },
+    {
+      "name": "Bain de ...",
+      "level": "2",
+      "words": [
+        "Soleil",
+        "Bouche",
+        "Boue",
+        "Foule"
+      ]
+    },
+    {
+      "name": "Homophones de Villes Françaises ",
+      "level": "3",
+      "words": [
+        "Trois",
+        "Lion",
+        "Reine",
+        "Sept"
+      ]
+    },
+    {
+      "name": "Fins de Noms de Villes Espagnoles",
+      "level": "4",
+      "words": [
+        "Dix",
+        "Ville",
+        "Gosse",
+        "Lune"
+      ]
+    }
+  ]
+}
