@@ -1,0 +1,45 @@
+{
+  "name": "Grille n°14 ",
+  "categories": [
+    {
+      "name": "Episodes d'une Saga",
+      "level": "1",
+      "words": [
+        "Volet",
+        "Tome",
+        "Volume",
+        "Opus"
+      ]
+    },
+    {
+      "name": "Mots qui se prononcent comme les noms de deux animaux mis côte à côte",
+      "level": "2",
+      "words": [
+        "Chaource",
+        "Loucha",
+        "Louane",
+        "Pourra"
+      ]
+    },
+    {
+      "name": "Peintres Célèbres (en phonétique...)",
+      "level": "3",
+      "words": [
+        "Calot",
+        "Monnaie",
+        "Sera",
+        "Courber"
+      ]
+    },
+    {
+      "name": "Personnes du Labo (à une lettre près)",
+      "level": "4",
+      "words": [
+        "Lenia",
+        "Abel",
+        "Tomme",
+        "Aérien"
+      ]
+    }
+  ]
+}
